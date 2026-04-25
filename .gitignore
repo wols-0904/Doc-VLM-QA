@@ -226,3 +226,5 @@ artifacts/logs/*
 # Optional large benchmark data
 data/benchmarks/*
 !data/benchmarks/.gitkeep
+
+cache/
