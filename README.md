@@ -26,6 +26,41 @@
 3. **临时索引与检索**：针对当前长文档构建 FAISS 索引，检索最相关的 Top-k 文本块或页面。
 4. **生成回答**：结合用户问题与检索到的证据，调用 LLM 或 VLM 生成带有页码引用的最终回答。
 
+
+## 📂 推荐目录结构
+
+```text
+Doc-VLM-QA/
+├── app.py
+├── configs/
+│   ├── model.yaml
+│   ├── retrieval.yaml
+│   └── runtime.yaml
+├── src/doc_vlm_qa/
+│   ├── pipeline/
+│   ├── ingestion/
+│   ├── retrieval/
+│   ├── models/
+│   ├── citation/
+│   ├── ui/
+│   ├── evaluation/
+│   └── utils/
+├── scripts/
+├── tests/
+├── data/
+│   ├── samples/
+│   └── benchmarks/
+└── artifacts/
+    ├── indices/
+    └── logs/
+```
+
+- `app.py` 仅作为入口，核心逻辑放在 `src/doc_vlm_qa`。
+- `pipeline/router.py` 负责单页直答与多页检索路由。
+- `retrieval/index_store.py` 负责临时索引生命周期（构建/查询/清理）。
+- `citation/` 负责证据页映射和引用合法性检查。
+- `evaluation/` 支持直接VLM、文本RAG、页面RAG的对比实验。
+
 ## 🚀 快速开始
 
 本项目推荐在普通电脑或云服务器上运行。本地推理方案需 1张 24GB GPU，可运行 Qwen2.5-VL-7B-Instruct 的量化推理。
@@ -42,6 +77,15 @@
 
     # 步骤 4. 运行服务
     python app.py
+
+
+### 启动方式（当前脚手架）
+
+```bash
+pip install -r requirements.txt
+cp .env.example .env
+bash scripts/run_app.sh
+```
 
 ## 📝 评测与实验
 

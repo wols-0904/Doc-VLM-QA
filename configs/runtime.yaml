@@ -1,0 +1,11 @@
+routing:
+  direct_vlm_max_pages: 1
+  direct_vlm_max_files: 1
+
+tmp:
+  root: artifacts/indices
+  cleanup_on_session_end: true
+
+limits:
+  max_upload_files: 10
+  max_pdf_pages: 200

@@ -216,3 +216,13 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Project runtime artifacts
+artifacts/indices/*
+!artifacts/indices/.gitkeep
+artifacts/logs/*
+!artifacts/logs/.gitkeep
+
+# Optional large benchmark data
+data/benchmarks/*
+!data/benchmarks/.gitkeep
