@@ -1,0 +1,15 @@
+llm:
+  provider: openai-compatible
+  model: qwen2.5-7b-instruct
+  temperature: 0.2
+  max_tokens: 1024
+
+vlm:
+  provider: openai-compatible
+  model: qwen2.5-vl-7b-instruct
+  temperature: 0.2
+  max_tokens: 1024
+
+embedding:
+  model: BAAI/bge-small-zh-v1.5
+  normalize: true

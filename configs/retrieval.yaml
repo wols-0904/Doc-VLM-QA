@@ -1,0 +1,12 @@
+chunking:
+  strategy: page_then_paragraph
+  chunk_size: 500
+  chunk_overlap: 100
+
+faiss:
+  index_type: IndexFlatIP
+  metric: cosine
+
+top_k:
+  retrieve: 5
+  rerank: 3
