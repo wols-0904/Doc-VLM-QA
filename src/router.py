@@ -49,13 +49,17 @@ def generate_text_answer(query: str, retrieved_contexts: list[dict]) -> str:
     if not api_key:
         raise ValueError("未配置 OPENAI_API_KEY")
 
-    client = openai.OpenAI(api_key=api_key, base_url=base_url)
-    response = client.chat.completions.create(
-        model=model,
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_prompt},
-        ],
-    )
-
-    return response.choices[0].message.content or ""
+    try:
+        client = openai.OpenAI(api_key=api_key, base_url=base_url)
+        response = client.chat.completions.create(
+            model=model,
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt},
+            ],
+        )
+    except openai.OpenAIError:
+        return "文档中未提及"
+    if not response.choices:
+        return "文档中未提及"
+    return response.choices[0].message.content or "文档中未提及"

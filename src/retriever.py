@@ -5,7 +5,10 @@ import numpy as np
 from sentence_transformers import SentenceTransformer
 
 
-EMBEDDING_MODEL = SentenceTransformer("BAAI/bge-small-zh-v1.5")
+try:
+    EMBEDDING_MODEL = SentenceTransformer("BAAI/bge-small-zh-v1.5")
+except (OSError, RuntimeError, ValueError):
+    EMBEDDING_MODEL = None
 
 
 def chunk_text(text: str, chunk_size: int = 400, overlap: int = 50) -> list[str]:
@@ -17,7 +20,7 @@ def chunk_text(text: str, chunk_size: int = 400, overlap: int = 50) -> list[str]
     if overlap < 0:
         raise ValueError("overlap 不能小于 0")
     if overlap >= chunk_size:
-        raise ValueError("overlap 必须小于 chunk_size")
+        raise ValueError("overlap 不能大于或等于 chunk_size")
 
     chunks: list[str] = []
     start = 0
@@ -41,6 +44,9 @@ class DocumentRetriever:
 
     def build_index(self, parsed_data: list[dict]) -> None:
         """从解析结果构建临时 FAISS 向量索引。"""
+        if EMBEDDING_MODEL is None:
+            raise RuntimeError("无法加载 embedding 模型 BAAI/bge-small-zh-v1.5")
+
         self.chunks = []
         self.chunk_page_ids = []
 
@@ -64,6 +70,9 @@ class DocumentRetriever:
 
     def search(self, query: str, top_k: int = 3) -> list[dict]:
         """在临时索引中检索最相关文本块。"""
+        if EMBEDDING_MODEL is None:
+            raise RuntimeError("无法加载 embedding 模型 BAAI/bge-small-zh-v1.5")
+
         if not query.strip() or self.index is None or not self.chunks:
             return []
 

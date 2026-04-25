@@ -7,6 +7,9 @@ import gradio as gr
 from src.parser import parse_pdf
 
 
+PROJECT_ROOT = Path(__file__).resolve().parent
+
+
 def _parse_and_preview(pdf_file: str | None) -> tuple[str, str, str | None]:
     if not pdf_file:
         return "请先上传 PDF 文件。", "", None
@@ -19,7 +22,7 @@ def _parse_and_preview(pdf_file: str | None) -> tuple[str, str, str | None]:
         first_page = parsed[0]
         image_path = Path(first_page["image_path"])
         if not image_path.is_absolute():
-            image_path = Path(__file__).resolve().parent / image_path
+            image_path = PROJECT_ROOT / image_path
 
         status = f"成功解析 {len(parsed)} 页！"
         return status, str(first_page.get("text", "")), str(image_path)
@@ -27,7 +30,7 @@ def _parse_and_preview(pdf_file: str | None) -> tuple[str, str, str | None]:
         return f"解析失败：{exc}", "", None
 
 
-with gr.Blocks(title="Doc-VLM-QA PDF 解析系统") as demo:
+with gr.Blocks(title="Doc-VLM-QA PDF 解析系统") as app:
     gr.Markdown("""
 # Doc-VLM-QA 文档解析系统
 上传 PDF 后，系统将提取每页文本并渲染图片，右侧展示第 1 页结果。
@@ -51,4 +54,4 @@ with gr.Blocks(title="Doc-VLM-QA PDF 解析系统") as demo:
 
 
 if __name__ == "__main__":
-    demo.launch(server_name="0.0.0.0", server_port=6006)
+    app.launch(server_name="0.0.0.0", server_port=6006)
