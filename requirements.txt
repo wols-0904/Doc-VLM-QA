@@ -1,0 +1,6 @@
+pymupdf
+gradio
+faiss-cpu
+sentence-transformers
+openai  # 用于调用阿里云百炼的 Qwen API
+python-dotenv
